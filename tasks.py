@@ -35,6 +35,8 @@ def order_robots_from_Robotsparebin():
         list_of_file_to_zip.append(pdf_file)
         order_another_robot()
 
+    """ test """
+
         
 
     close_page()
