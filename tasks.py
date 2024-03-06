@@ -84,7 +84,15 @@ def fill_order(row):
     page.locator("xpath=//label[contains(.,'3. Legs:')]/../input").fill(row['Legs'])
     page.locator("#address").fill(row['Address'])
     page.locator("xpath=//button[contains(.,'Show model info')]").click()
-    page.locator("#order").click()
+    while page.locator("#order").is_visible(timeout=0.001):
+        page.locator("#order").click()
+
+    """ page.locator("#order").click()
+    time.sleep(0.03)
+    alert_popup = page.locator("#order").is_visible
+    if alert_popup:
+        page.locator("#order").click()
+ """
 #//*[@id="root"]/div/div[1]/div/div[1]/div
 #root > div > div.container > div > div.col-sm-7 > div
 #<div class="alert alert-danger" role="alert">Unexpected Server Error</div>
