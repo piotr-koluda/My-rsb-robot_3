@@ -36,6 +36,9 @@ def order_robots_from_Robotsparebin():
         order_another_robot()
 
     """ test """
+    #tutaj znajdzie się coś
+    """ jakist testowy plik """
+    #"inny test"
 
         
 
