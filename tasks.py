@@ -34,10 +34,7 @@ def order_robots_from_Robotsparebin():
         combine_pdfs(order_path=screen_file,receipte_path=pdf_file)
         list_of_file_to_zip.append(pdf_file)
         order_another_robot()
-        #test testów
-        """ test """
-        #inn ytest
-        #jakis zupełnie od czapy test
+
         
 
     close_page()
