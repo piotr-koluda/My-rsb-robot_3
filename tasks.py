@@ -3,7 +3,9 @@ from robocorp import browser
 from RPA.HTTP import HTTP
 from RPA.Tables import Tables
 from RPA.PDF import PDF
+from RPA.FileSystem import FileSystem
 import time
+import shutil
 
 
 
@@ -25,25 +27,27 @@ def order_robots_from_Robotsparebin():
     table = read_csv_file(file_name)
     open_robot_order_website(URL=URL)
     time.sleep(1)
-    list_of_file_to_zip = []
+
+    archive_path = "output\\archive\\"
+    create_dictionary(archive_path)
+
     for row in table:
         close_annoying_popup()
         fill_order(row)
         pdf_file = store_receipt_as_pdf(row['Order number'], destination_folder=destination_folder)
         screen_file = take_screenshot(row['Order number'], path_to_save=destination_folder)
-        combine_pdfs(order_path=screen_file,receipte_path=pdf_file)
-        list_of_file_to_zip.append(pdf_file)
+        combine_pdfs(order_path=screen_file,receipte_path=pdf_file, archive_path=archive_path+row['Order number']+".pdf")
         order_another_robot()
+    
 
-
-
+    archive_receipts(destination_folder
+                     , archive_path)
         
 
     close_page()
+def create_dictionary(path:str):
+    FileSystem.create_directory(FileSystem, path,parents=True,exist_ok=True)
 
-
-    message = "Hello"
-    message = message + " World!"
 
 def download_file(file_to_download: str):
     file = HTTP()
@@ -64,7 +68,7 @@ def close_annoying_popup():
 
 def open_robot_order_website(URL:str):
     browser.configure(
-        slowmo = 100
+        slowmo = 50
     )
     browser.goto(url=URL)
     page = browser.page()
@@ -96,9 +100,6 @@ def fill_order(row):
     if alert_popup:
         page.locator("#order").click()
  """
-#//*[@id="root"]/div/div[1]/div/div[1]/div
-#root > div > div.container > div > div.col-sm-7 > div
-#<div class="alert alert-danger" role="alert">Unexpected Server Error</div>
     
 def take_screenshot(order_number: str, path_to_save: str):
     destination_path = path_to_save+order_number+".png"
@@ -106,13 +107,17 @@ def take_screenshot(order_number: str, path_to_save: str):
     page.locator("xpath=//*[@id='robot-preview-image']").screenshot(path=destination_path)
     return destination_path
 
-def combine_pdfs(order_path: str , receipte_path: str):
+def combine_pdfs(order_path: str , receipte_path: str, archive_path:str):
     list_of_files =[order_path, receipte_path]
     pdf = PDF()
-    pdf.add_files_to_pdf(list_of_files, target_document=receipte_path)
+    pdf.add_files_to_pdf(list_of_files, target_document=archive_path)
 
-def archive_receipts():
+
+def archive_receipts(folder_path:str, directory: str ):
+    file_paht_zip = folder_path+"archive"
+    shutil.make_archive(base_name=file_paht_zip, format="zip", root_dir=directory)
     """ tekst """
+
 
 def close_page():
     page = browser.page()
