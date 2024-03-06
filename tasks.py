@@ -36,6 +36,7 @@ def order_robots_from_Robotsparebin():
         order_another_robot()
         """ test """
         #inn ytest
+        #jakis zupełnie od czapy test
         
 
     close_page()
